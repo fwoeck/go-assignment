@@ -5,6 +5,9 @@ import (
 	"gorm.io/gorm"
 )
 
+// This is a minimalistic test to demonstrate the concept. In reality, I would opt
+// for more comprehensive test coverage, including some integration tests.
+//
 func TestFilterAndSortPartners(t *testing.T) {
 	queryParams := QueryParams{
 		AddressLon: 13.4050,
