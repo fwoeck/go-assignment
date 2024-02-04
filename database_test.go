@@ -12,8 +12,10 @@ func TestFilterAndSortPartners(t *testing.T) {
 	}
 
 	partners := []Partners{
+		// Within radius:
 		{Model: gorm.Model{ID: 1}, AddressLon: 13.4050, AddressLat: 52.5200, OperatingRadius: 5000, Rating: 4.5, Services: []Services{}},
 		{Model: gorm.Model{ID: 2}, AddressLon: 13.4550, AddressLat: 52.5200, OperatingRadius: 10000, Rating: 4.7, Services: []Services{}},
+		// Outside of radius:
 		{Model: gorm.Model{ID: 3}, AddressLon: 14.4050, AddressLat: 53.5200, OperatingRadius: 1000, Rating: 4.9, Services: []Services{}},
 	}
 

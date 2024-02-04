@@ -17,6 +17,7 @@ type Partners struct {
 	OperatingRadius  float64     `gorm:"type:float"`
 	Rating           float64     `gorm:"type:float"`
 	Services         []Services  `gorm:"foreignKey:PartnerID"`
+	// For local calculation with the haversine function:
 	Distance         float64     `gorm:"-"`
 }
 
