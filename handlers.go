@@ -5,18 +5,7 @@ import (
 	"net/http"
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
-	_ "matching/docs"
 )
-
-func validateServices(services []string) bool {
-	validServices := map[string]bool{"wood": true, "carpet": true, "tiles": true}
-	for _, service := range services {
-		if _, ok := validServices[service]; !ok {
-			return false
-		}
-	}
-	return true
-}
 
 // @title Flooring Matches API
 // @description API for retrieving flooring matches based on user preferences.
@@ -42,6 +31,8 @@ func Flooring(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
+	logToFile(queryParams);
+
 	var partnerIDs []uint
 
 	db.Table("services").
@@ -62,5 +53,12 @@ func Flooring(c *gin.Context, db *gorm.DB) {
 	}
 
 	partners = filterAndSortPartners(partners, queryParams)
-	c.JSON(http.StatusOK, partners)
+	c.JSON(http.StatusOK, gin.H{"Partners": partners})
+}
+
+func PartnerIndex(c *gin.Context, db *gorm.DB) {
+	var partners []Partners
+
+	db.Preload("Services").Find(&partners)
+	c.JSON(http.StatusOK, gin.H{"Partners": partners})
 }

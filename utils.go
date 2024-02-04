@@ -31,3 +31,13 @@ func logToFile(data QueryParams) {
 	logger := log.New(logFile, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 	logger.Printf("Received query: %+v\n", data)
 }
+
+func validateServices(services []string) bool {
+	validServices := map[string]bool{"wood": true, "carpet": true, "tiles": true}
+	for _, service := range services {
+		if _, ok := validServices[service]; !ok {
+			return false
+		}
+	}
+	return true
+}

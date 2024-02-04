@@ -2,7 +2,6 @@ package main
 
 import (
 	"gorm.io/gorm"
-	_ "matching/docs"
 )
 
 type Services struct {

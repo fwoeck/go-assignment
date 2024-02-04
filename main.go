@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -19,9 +18,7 @@ func main() {
 	})
 
 	router.GET("/partners", func(c *gin.Context) {
-		var partners []Partners
-		db.Preload("Services").Find(&partners)
-		c.JSON(http.StatusOK, gin.H{"partners": partners})
+		PartnerIndex(c, db)
 	})
 
 	router.Run(":8080")

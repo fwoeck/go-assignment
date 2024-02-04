@@ -5,7 +5,6 @@ import (
 	"sort"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	_ "matching/docs"
 )
 
 func initDB() *gorm.DB {
