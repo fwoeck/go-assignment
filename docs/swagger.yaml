@@ -32,8 +32,8 @@ paths:
         Retrieves matches based on flooring preferences
       parameters:
       - description: QueryParams Object
-        example: '"{\"address_lon\": 10.0, \"address_lat\": 20.0, \"services\": [\"wood\",
-          \"tiles\"], \"floor_size\": 120.5, \"phone_number\": \"123-456-7890\"}"'
+        example: '''{"address_lon": 13.45, "address_lat": 52.5, "services": ["tiles",
+          "carpet"], "floor_size": 120.5, "phone_number": "123-456-7890"}'''
         in: query
         name: q
         required: true
