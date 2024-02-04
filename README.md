@@ -3,8 +3,7 @@
 ## Setup (macOS)
 
     > brew bundle
-    > go build -o matching
-    > ./matching
+    > go build -o matching && ./matching
 
 ## Show Seed Data
 
@@ -12,7 +11,7 @@
 
 ## Execute Example Query
 
-    > PARM=$(echo -n '{"address_lon":10.0,"address_lat":20.0,"services":["wood","tiles"],"floor_size":100.5,"phone_number":"123-456-7890"}' | jq -s -R -r @uri)
+    > PARM=$(echo -n '{"address_lon": 13.45, "address_lat": 52.5, "services": ["tiles", "carpet"], "floor_size": 120.5, "phone_number": "123-456-7890"}' | jq -s -R -r @uri)
     > curl "http://localhost:8080/matches/flooring?q=$(echo -n $PARM)"
 
 ## Open Swagger Docs
