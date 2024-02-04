@@ -18,6 +18,9 @@ func initDB() *gorm.DB {
 	return db
 }
 
+// This filters and sorts the partners objects in memory.
+// See README.md for considerations.
+//
 func filterAndSortPartners(partners []Partners, queryParams QueryParams) []Partners {
 	filteredPartners := make([]Partners, 0)
 
@@ -37,4 +40,32 @@ func filterAndSortPartners(partners []Partners, queryParams QueryParams) []Partn
 	})
 
 	return filteredPartners
+}
+
+// Retrieve only partner entries that have at least the requested
+// services [tiles, carpet, wood] associated.
+// For practical reasons, the response is limited to protect against
+// overly large results. See README.md for considerations.
+//
+func fetchPartners(queryParams QueryParams, db *gorm.DB) []Partners {
+	var partnerIDs []uint
+
+	db.Table("services").
+		Select("services.partner_id").
+		Where("services.name IN ?", queryParams.Services).
+		Group("services.partner_id").
+		Having("COUNT(DISTINCT services.name) >= ?", len(queryParams.Services)).
+		Pluck("services.partner_id", &partnerIDs)
+
+	var partners []Partners
+
+	if len(partnerIDs) > 0 {
+		db.Preload("Services").
+		Where("id IN ?", partnerIDs).
+		Order("rating DESC").
+		Limit(1000).
+		Find(&partners)
+	}
+
+	return filterAndSortPartners(partners, queryParams)
 }

@@ -7,6 +7,9 @@ import (
 	_ "matching/docs"
 )
 
+// Standard function to calculate the distance of two points
+// given as lon/lat. See README.md for considerations.
+//
 func haversine(lat1, lon1, lat2, lon2 float64) float64 {
 	var (
 		rad      = math.Pi / 180

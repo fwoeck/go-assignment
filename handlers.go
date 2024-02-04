@@ -33,26 +33,7 @@ func Flooring(c *gin.Context, db *gorm.DB) {
 
 	logToFile(queryParams);
 
-	var partnerIDs []uint
-
-	db.Table("services").
-		Select("services.partner_id").
-		Where("services.name IN ?", queryParams.Services).
-		Group("services.partner_id").
-		Having("COUNT(DISTINCT services.name) >= ?", len(queryParams.Services)).
-		Pluck("services.partner_id", &partnerIDs)
-
-	var partners []Partners
-
-	if len(partnerIDs) > 0 {
-		db.Preload("Services").
-			Where("id IN ?", partnerIDs).
-			Order("rating DESC").
-			Limit(1000).
-			Find(&partners)
-	}
-
-	partners = filterAndSortPartners(partners, queryParams)
+	partners := fetchPartners(queryParams, db);
 	c.JSON(http.StatusOK, gin.H{"Partners": partners})
 }
 
