@@ -1,0 +1,57 @@
+definitions:
+  main.QueryParams:
+    properties:
+      address_lat:
+        type: number
+      address_lon:
+        type: number
+      floor_size:
+        type: number
+      phone_number:
+        type: string
+      services:
+        items:
+          type: string
+        type: array
+    required:
+    - address_lat
+    - address_lon
+    - floor_size
+    - phone_number
+    - services
+    type: object
+info:
+  contact: {}
+paths:
+  /matches/flooring:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        API for retrieving flooring matches based on user preferences.
+        Retrieves matches based on flooring preferences
+      parameters:
+      - description: QueryParams Object
+        example: '"{\"address_lon\": 10.0, \"address_lat\": 20.0, \"services\": [\"wood\",
+          \"tiles\"], \"floor_size\": 120.5, \"phone_number\": \"123-456-7890\"}"'
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.QueryParams'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Retrieve flooring matches
+      tags:
+      - matches
+swagger: "2.0"
