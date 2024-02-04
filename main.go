@@ -5,11 +5,28 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/files"
 	_ "matching/docs"
 )
+
+type Services struct {
+	ID        uint   `gorm:"primaryKey"`
+	PartnerID uint
+	Name      string `gorm:"type:varchar(100)"`
+}
+
+type Partners struct {
+	gorm.Model
+	AddressLon   float64 `gorm:"type:float"`
+	AddressLat   float64 `gorm:"type:float"`
+	OperatingRadius float64 `gorm:"type:float"`
+	Rating       float64 `gorm:"type:float"`
+	Services     []Services `gorm:"foreignKey:PartnerID"`
+}
 
 type QueryParams struct {
 	AddressLon   float64   `json:"address_lon" binding:"required"`
@@ -17,6 +34,17 @@ type QueryParams struct {
 	Services     []string  `json:"services" binding:"required"`
 	FloorSize    float64   `json:"floor_size" binding:"required"`
 	PhoneNumber  string    `json:"phone_number" binding:"required"`
+}
+
+func initDB() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open("matching.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal("failed to connect database", err)
+	}
+
+	db.AutoMigrate(&Partners{}, &Services{})
+
+	return db
 }
 
 func validateServices(services []string) bool {
@@ -63,9 +91,20 @@ func Flooring(c *gin.Context) {
 }
 
 func main() {
+	db := initDB()
+
 	router := gin.Default()
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	router.GET("/matches/flooring", Flooring)
+
+	router.GET("/partners", func(c *gin.Context) {
+		var partners []Partners
+		db.Preload("Services").Find(&partners)
+		c.JSON(http.StatusOK, gin.H{"partners": partners})
+	})
+
 	router.Run(":8080")
 }
 

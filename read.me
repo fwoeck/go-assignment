@@ -1,8 +1,0 @@
-
-> brew bundle
-> go build -o matching
-> ./matching
-
-> PARM=$(echo -n '{"address_lon":10.0,"address_lat":20.0,"services":["wood","tiles"],"floor_size":100.5,"phone_number":"123-456-7890"}' | jq -s -R -r @uri)
-> curl "http://localhost:8080/matches/flooring?q=$(echo -n $PARM)"
-
