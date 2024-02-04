@@ -15,8 +15,11 @@ secondary sorting by distance would never be applied. Therefore, we could either
 round the score values or opt for a weighted sorting function that considers both
 score and distance with varying weights.
 
-3. The implementation, documentation, and testing are somewhat cursory in places,
-serving merely to demonstrate the proof-of-concept.
+3. The input parameters have not been thoroughly tested. Only the services are
+verified to exclusively include the predefined terms (wood, tiles, carpet) as
+an example.
+
+4. The Swagger input and output examples are not well-defined.
 
 
 ## Setup (macOS)

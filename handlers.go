@@ -31,6 +31,11 @@ func Flooring(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
+	if !validateServices(queryParams.Services) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid service(s) provided"})
+		return
+	}
+
 	logToFile(queryParams);
 
 	partners := fetchPartners(queryParams, db);
