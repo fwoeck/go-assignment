@@ -46,6 +46,6 @@ an example (by the function validateServices).
 
 ## Open Swagger Docs
 
-    > open "http://localhost:8080/swagger/index.html#/matches/get_matches_flooring"
+    > open "http://localhost:8080/swagger/index.html#/matches/post_matches_flooring"
 
 ![Swagger Docs](static/swagger-docs.png)
