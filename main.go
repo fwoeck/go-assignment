@@ -13,7 +13,7 @@ func main() {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.GET("/matches/flooring", func(c *gin.Context) {
+	router.POST("/matches/flooring", func(c *gin.Context) {
 		Flooring(c, db)
 	})
 

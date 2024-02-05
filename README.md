@@ -42,28 +42,6 @@ an example (by the function validateServices).
 
 ## Execute Example Query
 
-    > PARM=$(echo -n '{"address_lon": 13.45, "address_lat": 52.5, "services": ["tiles", "carpet"], "floor_size": 120.5, "phone_number": "123-456-7890"}' | jq -s -R -r @uri)
-
-    > curl "http://localhost:8080/matches/flooring?q=$(echo -n $PARM)" | jq .
-      {
-        "Partners": [
-          {
-            "ID": 7,
-            "CreatedAt": "2024-01-01T00:00:00Z",
-            "UpdatedAt": "2024-01-01T00:00:00Z",
-            "DeletedAt": null,
-            "AddressLon": 13.45036030348532,
-            "AddressLat": 52.50976154042684,
-            "OperatingRadius": 32709,
-            "Rating": 4.96,
-            "Services": [
-              {
-                "ID": 39,
-                "PartnerID": 7,
-                "Name": "tiles"
-              },
-      [...]
-
 ![Postman Request](static/postman-request.png)
 
 ## Open Swagger Docs

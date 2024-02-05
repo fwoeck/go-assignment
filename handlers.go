@@ -1,33 +1,26 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
+	_ "matching/docs"
 )
 
-// @title Flooring Matches API
-// @description API for retrieving flooring matches based on user preferences.
-// @version 1
-// @host localhost:8080
-// @BasePath /
+// PostFlooringMatches godoc
 // @Summary Retrieve flooring matches
-// @Description Retrieves matches based on flooring preferences
+// @Description Retrieves matches based on flooring preferences submitted by the customer
 // @Tags matches
 // @Accept json
 // @Produce json
-// @Param q query string true "QueryParams Object" example('{"address_lon": 13.45, "address_lat": 52.5, "services": ["tiles", "carpet"], "floor_size": 120.5, "phone_number": "123-456-7890"}')
-// @Success 200 {object} QueryParams
-// @Failure 400 {object} map[string]string
-// @Router /matches/flooring [get]
+// @Param query body QueryParams true "Query Parameters"
+// @Success 200 {object} FlooringMatchesResponse "success"
+// @Failure 400 {object} map[string]string "bad request, invalid input"
+// @Router /matches/flooring [post]
 func Flooring(c *gin.Context, db *gorm.DB) {
 	var queryParams QueryParams
-
-	q := c.Query("q")
-
-	if err := json.Unmarshal([]byte(q), &queryParams); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid query parameter"})
+	if err := c.ShouldBindJSON(&queryParams); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

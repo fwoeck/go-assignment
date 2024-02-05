@@ -4,7 +4,6 @@ import (
 	"log"
 	"math"
 	"os"
-	_ "matching/docs"
 )
 
 // Standard function to calculate the distance of two points

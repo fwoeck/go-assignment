@@ -1,4 +1,30 @@
 definitions:
+  main.FlooringMatchesResponse:
+    properties:
+      partners:
+        items:
+          $ref: '#/definitions/main.Partner'
+        type: array
+    type: object
+  main.Partner:
+    properties:
+      addressLat:
+        type: number
+      addressLon:
+        type: number
+      distance:
+        type: number
+      id:
+        type: integer
+      operatingRadius:
+        type: number
+      rating:
+        type: number
+      services:
+        items:
+          $ref: '#/definitions/main.Service'
+        type: array
+    type: object
   main.QueryParams:
     properties:
       address_lat:
@@ -20,33 +46,38 @@ definitions:
     - phone_number
     - services
     type: object
+  main.Service:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
   /matches/flooring:
-    get:
+    post:
       consumes:
       - application/json
-      description: |-
-        API for retrieving flooring matches based on user preferences.
-        Retrieves matches based on flooring preferences
+      description: Retrieves matches based on flooring preferences submitted by the
+        customer
       parameters:
-      - description: QueryParams Object
-        example: '''{"address_lon": 13.45, "address_lat": 52.5, "services": ["tiles",
-          "carpet"], "floor_size": 120.5, "phone_number": "123-456-7890"}'''
-        in: query
-        name: q
+      - description: Query Parameters
+        in: body
+        name: query
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/main.QueryParams'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: success
           schema:
-            $ref: '#/definitions/main.QueryParams'
+            $ref: '#/definitions/main.FlooringMatchesResponse'
         "400":
-          description: Bad Request
+          description: bad request, invalid input
           schema:
             additionalProperties:
               type: string

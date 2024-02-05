@@ -16,8 +16,8 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/matches/flooring": {
-            "get": {
-                "description": "API for retrieving flooring matches based on user preferences.\nRetrieves matches based on flooring preferences",
+            "post": {
+                "description": "Retrieves matches based on flooring preferences submitted by the customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,23 +30,24 @@ const docTemplate = `{
                 "summary": "Retrieve flooring matches",
                 "parameters": [
                     {
-                        "type": "string",
-                        "example": "'{\"address_lon\": 13.45, \"address_lat\": 52.5, \"services\": [\"tiles\", \"carpet\"], \"floor_size\": 120.5, \"phone_number\": \"123-456-7890\"}'",
-                        "description": "QueryParams Object",
-                        "name": "q",
-                        "in": "query",
-                        "required": true
+                        "description": "Query Parameters",
+                        "name": "query",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.QueryParams"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/main.QueryParams"
+                            "$ref": "#/definitions/main.FlooringMatchesResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "bad request, invalid input",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -59,6 +60,46 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "main.FlooringMatchesResponse": {
+            "type": "object",
+            "properties": {
+                "partners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.Partner"
+                    }
+                }
+            }
+        },
+        "main.Partner": {
+            "type": "object",
+            "properties": {
+                "addressLat": {
+                    "type": "number"
+                },
+                "addressLon": {
+                    "type": "number"
+                },
+                "distance": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operatingRadius": {
+                    "type": "number"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "services": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.Service"
+                    }
+                }
+            }
+        },
         "main.QueryParams": {
             "type": "object",
             "required": [
@@ -86,6 +127,17 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "main.Service": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         }
